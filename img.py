@@ -91,6 +91,8 @@ def process_image(image: Union[Path, BinaryIO], cols: Optional[int] = None, rows
     size = (cols, rows*2)
     im = Image.open(image)
     im.thumbnail(size, Image.ANTIALIAS)
+    # Convert to known format to avoid issues with transparency and palette based formats
+    im = im.convert('RGBA')
     output = []
     for y in range(1, im.size[1], 2):  # Use y and y -1 every loop
         line = ""
