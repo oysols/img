@@ -82,6 +82,11 @@ def is_valid_image(path: Path) -> bool:
     return True
 
 
+def flatten_rgba_to_rgb_with_black_background(rgba: Tuple[int, int, int, int]) -> List[int]:
+    opacity = rgba[3] / 255
+    return [int(channel * opacity) for channel in rgba[:3]]
+
+
 def process_image(image: Union[Path, BinaryIO], cols: Optional[int] = None, rows: Optional[int] = None) -> List[str]:
     term_cols, term_rows = os.get_terminal_size(1)
     if not cols:
@@ -101,13 +106,15 @@ def process_image(image: Union[Path, BinaryIO], cols: Optional[int] = None, rows
             char = "▄"
 
             # Background (top)
-            p = im.getpixel((x, y - 1))
-            colorcode = get_colorcode_from_rgb(p[:3])
+            rgba = im.getpixel((x, y - 1))
+            rgb = flatten_rgba_to_rgb_with_black_background(rgba)
+            colorcode = get_colorcode_from_rgb(rgb)
             background_color = "\033[48;5;{}m".format(colorcode)
 
             # Foreground (bottom)
-            p = im.getpixel((x, y))
-            colorcode = get_colorcode_from_rgb(p[:3])
+            rgba = im.getpixel((x, y))
+            rgb = flatten_rgba_to_rgb_with_black_background(rgba)
+            colorcode = get_colorcode_from_rgb(rgb)
             foreground_color = "\033[38;5;{}m".format(colorcode)
             line += background_color + foreground_color + char
         line += "\033[0m"  # Clear formatting
