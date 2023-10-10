@@ -95,7 +95,7 @@ def process_image(image: Union[Path, BinaryIO], cols: Optional[int] = None, rows
         rows = term_rows
     size = (cols, rows*2)
     im = Image.open(image)
-    im.thumbnail(size, Image.ANTIALIAS)
+    im.thumbnail(size, Image.Resampling.LANCZOS)
     # Convert to known format to avoid issues with transparency and palette based formats
     im = im.convert('RGBA')
     output = []
