@@ -1,0 +1,7 @@
+[project]
+name = "img"
+version = "0.1.0"
+dependencies = ["pillow"]
+
+[project.scripts]
+img = "img:main"
