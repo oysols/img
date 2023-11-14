@@ -17,6 +17,6 @@ Print images in the terminal using ANSI codes
  - Accepts raw image data over stdin `cat image.jpg | img -`
  - `img.process_image(path)` returns the image rows as strings
 
-## Installation
+## CLI Tool Installation
 
-`pip3 install --user "git+https://github.com/oysols/img"`
+`pipx install "git+https://github.com/oysols/img"`
